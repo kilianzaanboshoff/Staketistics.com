@@ -1,0 +1,1102 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: center;
+            padding: 10px 0;
+        }
+
+        .navbar a {
+            background-color: #0000ff;
+            color: #ffffff;
+            border-radius: 20px;
+            padding: 10px 20px;
+            text-decoration: none;
+            margin: 0 10px;
+            transition: background-color 0.3s ease;
+        }
+
+        .navbar a:hover {
+            background-color: #FF14AD; /* This color value corresponds to neon pink */
+            color: #fff;
+        }
+        
+
+    
+    .typing h1 {
+      overflow: hidden; /* Ensures the content is not revealed until the animation */
+      border-right: .15em solid pink; /* The typwriter cursor */
+      white-space: nowrap; /* Keeps the content on a single line */
+      margin: 0 auto; /* Gives that scrolling effect as the typing happens */
+      letter-spacing: .15em; /* Adjust as needed */
+      animation: typing 2s steps(30, end), blink-caret .89s step-end infinite;
+    }
+
+    /* The typing effect */
+    @keyframes typing {
+      from { width: 0 }
+      to { width: 100% }
+    }
+
+    /* The typewriter cursor effect */
+    @keyframes blink-caret {
+      from, to { border-color: transparent }
+      50% { border-color: #000; }
+    }
+
+    .revolving-emoji {
+      animation: rotate 10s infinite linear;
+      font-size: 40px;
+      margin: 100px auto;
+      text-align: center;
+      display: block;
+    }
+    </style>
+</head>
+<body>
+
+
+</body>
+<head>
+  <title>StakeTistics.com</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels"></script>
+  <style>
+  body {
+  background-color: #fff;
+  display: flex;
+  flex-wrap: wrap; /* This will allow the charts to wrap onto the next line if the window size is too small */
+  justify-content: space-around; /* This will space the charts evenly */
+  align-items: center;
+  padding: 30px;
+}
+
+  .header {
+    margin-bottom: 30px;
+    text-align: center;
+    font-size: 60px;
+    animation: glow 1s infinite alternate;
+    color: #000;
+  }
+
+  @keyframes glow {
+    0% {
+      text-shadow: 0 0 10px #fff;
+    }
+    100% {
+      text-shadow: 0 0 20px #ff00ff, 0 0 30px #ff00ff, 0 0 40px #ff00ff;
+    }
+  }
+
+  .chart-container {
+  background-color: #000;
+  padding: 20px;
+  border-radius: 8px;
+  margin-bottom: 30px;
+  width: 40%; /* This will make the charts take up approximately 40% of the window width */
+  max-width: 800px;
+  resize: horizontal;
+  overflow: auto;
+  margin: 10px; /* This will provide space around each chart */
+}
+.charts-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+}
+ 
+
+  canvas {
+    background-color: #000;
+    width: 100%;
+    height: auto;
+  }
+  .statement {
+    margin-top: -10px; /* Add margin-top to adjust the spacing */
+    text-align: center;
+    margin-bottom: 50px;
+  }
+  .created-by {
+    margin-top: 10px;
+    font-size: 16px;
+    color: #000;
+  }
+</style>
+
+
+</head>
+<body>
+  <div class="typing">
+    <h1>StakeTistics.com</h1>
+  </div>
+
+  <div class="statement">
+    Data: <a href="https://www.stakingrewards.com/" target="_blank" rel="noopener noreferrer">StakingRewards.com</a> 🥩
+    <br>
+    <span class="created-by">Created by <a href="https://twitter.com/Fundi_Crypto" target="_blank" rel="noopener noreferrer">fundi_crypto</a> 🐦</span>
+  </div>
+
+  <div class="charts-container">
+    <div class="chart-container">
+      <canvas id="myChart1"></canvas>
+    </div>
+
+    <div class="chart-container">
+      <canvas id="myChart2"></canvas>
+    </div>
+
+    <div class="chart-container">
+      <canvas id="myChart3"></canvas>
+    </div>
+   <div class="chart-container">
+      <canvas id="myChart9"></canvas>
+    </div>
+    <div class="chart-container">
+      <canvas id="myChart7"></canvas>
+    </div>
+     <div class="chart-container">
+      <canvas id="myChart6"></canvas>
+    </div>
+    <div class="chart-container">
+      <canvas id="myChart4"></canvas>
+    </div>
+    
+      <div class="chart-container">
+      <canvas id="myChart5"></canvas>
+    </div>
+    <div class="chart-container">
+      <canvas id="myChart8"></canvas>
+    </div>
+    <div class="chart-container">
+      <canvas id="myChart10"></canvas>
+    </div>
+    
+  </div>
+
+  <script>
+    // Define the URL, headers and query for Chart 1
+    var url1 = "https://api.stakingrewards.com/public/query";
+    var headers1 = {
+      "x-api-key": "dc455e06-343b-414e-abc4-8158ba72f093",
+      "Content-Type": "application/json"
+    };
+    var query1 = `
+    {
+      assets(where:{isActive:true},order:{metricKey_asc:"sm_rank"},limit:10){
+        name
+        metrics(where:{metricKeys:["inflation_rate"]},limit:1){
+          defaultValue
+        }
+      }
+    }
+    `;
+    Chart.defaults.font.size = 15;
+    var colors1 = [
+      '#0000ff', '#FFB399', '#FF33FF', '#FFFF99', '#00B3E6',
+      '#E6B333', '#3366E6', '#999966', '#99FF99', '#B34D4D'
+    ];
+
+    // Send the request for Chart 1
+    fetch(url1, {
+      method: 'POST',
+      headers: headers1,
+      body: JSON.stringify({ query: query1 })
+    })
+      .then(response => response.json())
+      .then(data => {
+        // Parse the JSON response for Chart 1
+        var assets1 = data.data.assets;
+        var names1 = assets1.map(asset => asset.name);
+        var inflation_rates1 = assets1.map(asset => parseFloat(asset.metrics[0].defaultValue));
+
+        // Get the canvas context for Chart 1
+        var ctx1 = document.getElementById('myChart1').getContext('2d');
+
+        // Create a bar chart for inflation rates
+        new Chart(ctx1, {
+          type: 'bar',
+          data: {
+            labels: names1,
+            datasets: [{
+              label: 'Inflation Rate of Top 10 PoS Networks (%)',
+              data: inflation_rates1,
+              backgroundColor: colors1,
+              borderColor: 0000,
+              borderWidth: 2
+            }]
+          },
+          options: {
+            plugins: {
+              datalabels: {
+                color: '#000',
+                align: 'end',
+                anchor: 'end',
+                formatter: function (value, context) {
+                  return value.toFixed(2);
+                }
+              },
+              legend: {
+                display: false,
+              },
+              title: {
+                display: true,
+                text: 'Inflation Rates of Top 10 Assets (%)',
+                fontsize: 24,
+                fontColor: '#000'
+              }
+            },
+            scales: {
+              yAxes: [{
+                ticks: {
+                  beginAtZero: true,
+                  fontColor: '#000'
+                },
+                gridLines: {
+                  color: '#666'
+                }
+              }],
+              xAxes: [{
+                ticks: {
+                  fontColor: '#000'
+                },
+                gridLines: {
+                  color: '#666'
+                }
+              }]
+            },
+          }
+        });
+      });
+
+    // Define the URL, headers and query for Chart 2
+    var url2 = "https://api.stakingrewards.com/public/query";
+    var headers2 = {
+      "x-api-key": "dc455e06-343b-414e-abc4-8158ba72f093",
+      "Content-Type": "application/json"
+    };
+    var query2 = `
+    {
+      assets(where:{isActive:true},order:{metricKey_asc:"sm_rank"},limit:10){
+        name
+        metrics(where:{metricKeys:["annualized_rewards_usd"]},limit:1){
+          defaultValue
+        }
+      }
+    }
+    `;
+    var colors2 = [
+      '#FF6633', '#FFB399', '#FF33FF', '#FFFF99', '#00B3E6',
+      '#E6B333', '#3366E6', '#999966', '#99FF99', '#B34D4D'
+    ];
+
+    // Send the request for Chart 2
+    fetch(url2, {
+      method: 'POST',
+      headers: headers2,
+      body: JSON.stringify({ query: query2 })
+    })
+      .then(response => response.json())
+      .then(data => {
+        // Parse the JSON response for Chart 2
+        var assets2 = data.data.assets;
+        var names2 = assets2.map(asset => asset.name);
+        var rewards_usd2 = assets2.map(asset => parseFloat(asset.metrics[0].defaultValue));
+
+        // Get the canvas context for Chart 2
+        var ctx2 = document.getElementById('myChart2').getContext('2d');
+
+        // Create a bar chart for annualized rewards in USD
+        new Chart(ctx2, {
+          type: 'bar',
+          data: {
+            labels: names2,
+            datasets: [{
+              label: 'Annualized Rewards (USD)',
+              data: rewards_usd2,
+              backgroundColor: colors2,
+              borderColor: colors2,
+              borderWidth: 1
+            }]
+          },
+          options: {
+          plugins: {
+            datalabels: {
+              color: '#fffFFF',
+              anchor: 'end',
+              align: 'top',
+              formatter: function (value, context) {
+                return `$${value.toLocaleString()}`;
+              }
+            },
+            legend: {
+              display: false,
+            },
+            title: {
+              display: true,
+              text: 'Annualized Staking Rewards of Top 10 Assets ($)',
+              fontColor: '#fff',
+              fontSize: 24
+            }
+          },
+          scales: {
+            xAxes: [{
+              ticks: {
+                fontColor: '#fff'
+              },
+              gridLines: {
+                color: '#666'
+              }
+            }],
+            yAxes: [{
+              ticks: {
+                fontColor: '#fff'
+              },
+              gridLines: {
+                color: '#666'
+              }
+            }]
+          },
+        }
+      });
+    });
+      
+     // Define the URL, headers and query for Chart 3
+    var url3 = "https://api.stakingrewards.com/public/query";
+    var headers3 = {
+      "x-api-key": "dc455e06-343b-414e-abc4-8158ba72f093",
+      "Content-Type": "application/json"
+    };
+    var query3 = `
+    {
+      providers(where:{isActive:true},order:{metricKey_desc:"assets_under_management"},limit:15){
+        name
+        metrics(where:{metricKeys:["assets_under_management"]},limit:1){
+          defaultValue
+        }
+      }
+    }
+    `;
+    var colors3 = [
+      '#FF6633', '#FFB399', '#FF33FF', '#FFFF99', '#00B3E6',
+      '#E6B333', '#3366E6', '#999966', '#99FF99', '#B34D4D'
+    ];
+
+    // Send the request for Chart 3
+    fetch(url3, {
+      method: 'POST',
+      headers: headers3,
+      body: JSON.stringify({ query: query3 })
+    })
+      .then(response => response.json())
+      .then(data => {
+        // Parse the JSON response for Chart 3
+        var providers = data.data.providers;
+        var names3 = providers.map(provider => provider.name);
+        var aum3 = providers.map(provider => parseFloat(provider.metrics[0].defaultValue));
+
+        // Get the canvas context for Chart 3
+        var ctx3 = document.getElementById('myChart3').getContext('2d');
+
+        // Create a bar chart for assets under management
+        new Chart(ctx3, {
+          type: 'bar',
+          data: {
+            labels: names3,
+            datasets: [{
+              label: 'Assets Under Management',
+              data: aum3,
+              backgroundColor: colors3,
+              borderColor: colors3,
+              borderWidth: 1
+            }]
+          },
+          options: {
+          plugins: {
+            datalabels: {
+              color: '#fffFFF',
+              anchor: 'end',
+              align: 'top',
+              formatter: function (value, context) {
+                return `$${value.toLocaleString()}`;
+              }
+            },
+            legend: {
+              display: false,
+            },
+            title: {
+              display: true,
+              text: 'Top 15 Staking Providers by AUM ($)',
+              fontColor: '#fff',
+              fontSize: 24
+            }
+          },
+          scales: {
+            xAxes: [{
+              ticks: {
+                fontColor: '#fff'
+              },
+              gridLines: {
+                color: '#666'
+              }
+            }],
+            yAxes: [{
+              ticks: {
+                fontColor: '#fff'
+              },
+              gridLines: {
+                color: '#666'
+              }
+            }]
+          },
+        }
+      });
+    });
+
+    // Define the URL, headers and query for Chart 4
+    var url4 = "https://api.stakingrewards.com/public/query";
+    var headers4 = {
+      "x-api-key": "dc455e06-343b-414e-abc4-8158ba72f093",
+      "Content-Type": "application/json"
+    };
+    var query4 = `
+    {
+      assets(where:{isActive:true},order:{metricKey_desc:"net_staking_flow_7d"},limit:51){
+        name
+        metrics(where:{metricKeys:["net_staking_flow_7d"]},limit:1){
+          defaultValue
+        }
+      }
+    }
+    `;
+    var colors4 = [
+      '#FF6633', '#FFB399', '#FF33FF', '#FFFF99', '#00B3E6',
+      '#E6B333', '#3366E6', '#999966', '#99FF99', '#B34D4D'
+    ];
+
+    // Send the request for Chart 4
+    fetch(url4, {
+      method: 'POST',
+      headers: headers4,
+      body: JSON.stringify({ query: query4 })
+    })
+      .then(response => response.json())
+      .then(data => {
+        // Parse the JSON response for Chart 4
+        var assets4 = data.data.assets;
+        var names4 = assets4.map(asset => asset.name);
+        var net_staking_flow4 = assets4.map(asset => parseFloat(asset.metrics[0].defaultValue));
+
+        var ethereumFlow = net_staking_flow4[names4.indexOf("Ethereum")];
+        var othersFlow = net_staking_flow4.reduce((acc, cur) => acc + cur, 0) - ethereumFlow;
+        names4 = ["Ethereum", "Next 50 Combined"];
+        net_staking_flow4 = [ethereumFlow, othersFlow];
+
+        var randomColors = generateRandomColors(2);
+
+        // Get the canvas context for Chart 4
+        var ctx4 = document.getElementById('myChart4').getContext('2d');
+
+        // Create a bar chart for net staking flow
+        new Chart(ctx4, {
+          type: 'bar',
+          data: {
+            labels: names4,
+            datasets: [{
+              label: 'Net Staking Flow (7 Days)',
+              data: net_staking_flow4,
+              backgroundColor: randomColors,
+              borderColor: '#000',
+              borderWidth: 1
+            }]
+          },
+          options: {
+            title: {
+              display: true,
+              text: '7d Net Staking Flow: Ethereum vs Combined Inflow of Next 50 assets',
+              fontColor: '#000',
+              fontSize: 24
+            },
+            scales: {
+              x: {
+                title: {
+                  display: true,
+                  text: 'Assets',
+                  fontColor: '#000'
+                },
+                ticks: {
+                  fontColor: '#000'
+                }
+              },
+              y: {
+                title: {
+                  display: true,
+                  text: 'Net Staking Flow (7 Days)',
+                  fontColor: '#000'
+                },
+                ticks: {
+                  fontColor: '#000'
+                },
+                grid: {
+                  color: '#666'
+                }
+              }
+            },
+            plugins: {
+              legend: {
+                display: false,
+                labels: {
+                  fontColor: '#000',
+                  fontSize: 16
+                }
+              }
+            }
+          }
+        });
+      })
+      .catch(error => console.error(error));
+
+    function generateRandomColors(count) {
+      var colors = [];
+      for (var i = 0; i < count; i++) {
+        var randomColor = "#" + Math.floor(Math.random() * 16777215).toString(16);
+        colors.push(randomColor);
+      }
+      return colors;
+    }
+    
+    // Define the URL, headers and query for Chart 5
+    var url5 = "https://api.stakingrewards.com/public/query"; // Update this with API URL
+    var headers5 = {
+      "x-api-key": "dc455e06-343b-414e-abc4-8158ba72f093", // Update this with API Key
+      "Content-Type": "application/json"
+    };
+    var query5 = `{
+      assets(where:{isActive:true},order:{metricKey_asc:"net_staking_flow_7d"},limit:10){
+        name
+        metrics(where:{metricKeys:["net_staking_flow_7d"]},limit:1){
+          defaultValue
+        }
+      }
+    }`; // Update this with Query
+
+    var colors5 = [
+    '#FF6633', '#FFB399', '#FF33FF', '#FFFF99', '#00B3E6',
+      '#E6B333', '#3366E6', '#999966', '#99FF99', '#B34D4D'
+      // Array of colors for Chart 5
+    ];
+
+    // Send the request for Chart 5
+    fetch(url5, {
+      method: 'POST',
+      headers: headers5,
+      body: JSON.stringify({ query: query5 })
+    })
+      .then(response => response.json())
+      .then(data => {
+        // Parse the JSON response for Chart 5
+        var assets5 = data.data.assets;
+        var names5 = assets5.map(asset => asset.name);
+        var metrics5 = assets5.map(asset => parseFloat(asset.metrics[0].defaultValue));
+
+        // Get the canvas context for Chart 5
+        var ctx5 = document.getElementById('myChart5').getContext('2d');
+
+        // Create a bar chart for Chart 5
+        new Chart(ctx5, {
+          type: 'bar',
+          data: {
+            labels: names5,
+            datasets: [{
+              label: 'Staking Outflows (7d)', // Update with Label for the dataset
+              data: metrics5,
+              backgroundColor: colors5,
+              borderColor: colors5,
+              borderWidth: 1
+            }]
+          },
+          options: {
+          title: {
+              display: true,
+              text: 'Top Staking Outflows (7d)', // Update with Title
+              fontColor: '#fff',
+              fontSize: 20,
+            }
+          },
+          plugins: {
+            datalabels: {
+              color: '#fffFFF',
+              anchor: 'end',
+              align: 'top',
+              formatter: function (value, context) {
+                return `$${value.toLocaleString()}`; // Update with Formatter
+              }
+            },
+            legend: {
+              display: false,
+            },
+            
+          scales: {
+            xAxes: [{
+              ticks: {
+                fontColor: '#fff'
+              },
+              gridLines: {
+                color: '#666'
+              }
+            }],
+            yAxes: [{
+              ticks: {
+                fontColor: '#fff'
+              },
+              gridLines: {
+                color: '#666'
+              }
+            }]
+          },
+        }
+      });
+    });
+    
+    // Define the URL, headers, and query
+  var url6 = "https://api.stakingrewards.com/public/query";
+  var headers6 = {
+    "x-api-key": "dc455e06-343b-414e-abc4-8158ba72f093",
+    "Content-Type": "application/json"
+  };
+  var query6 = `
+  {
+    assets(where: {slugs: ["ethereum-2-0"]}, limit: 1) {
+      metrics(limit: 4, where: {metricKeys: ["activation_queue_minutes", "exit_queue_minutes"]}) {
+        defaultValue
+        metricKey
+      }
+    }
+  }
+  `;
+
+  // Array of fun and vibrant colors for the bars
+  var colors6 = [
+    '#FF3E4D', '#FFC233', '#FF71A6', '#00C7FF', '#FF6B8A',
+    '#97FF5A', '#FFCD46', '#FF9C75', '#2AFFEB', '#FF8EF0'
+  ];
+
+  // Send the request
+  fetch(url6, {
+    method: 'POST',
+    headers: headers6,
+    body: JSON.stringify({ query: query6 })
+  })
+    .then(response => response.json())
+    .then(data => {
+      // Parse the JSON response
+      var metrics6 = data.data.assets[0].metrics;
+      var labels6 = ["Time to Unstake", "Time to Stake"];
+      var values6 = metrics6.map(metric => parseFloat(metric.defaultValue) / (60 * 24)); // Convert minutes to days
+
+      // Get the canvas context
+      var ctx6 = document.getElementById('myChart6').getContext('2d');
+
+      // Create a bar chart for the metrics
+      new Chart(ctx6, {
+        type: 'bar',
+        data: {
+          labels: labels6,
+          datasets: [{
+            label: 'Time to Stake/Unstake ETH',
+            data: values6,
+            backgroundColor: colors6,
+            borderColor: colors6,
+            borderWidth: 1
+          }]
+        },
+        options: {
+          title: {
+            display: true,
+            text: 'Time to Unstake and Stake (Days)',
+            fontColor: '#fff',
+            fontSize: 20
+          },
+          
+          legend: {
+            display: false
+          },
+          scales: {
+            yAxes: [{
+              ticks: {
+                beginAtZero: true,
+                fontColor: '#fff',
+                labelString: 'Time (Days)',
+              },
+              gridLines: {
+                color: '#666'
+              }
+            }],
+            xAxes: [{
+              ticks: {
+                fontColor: '#fff',
+                 labelString: 'Actions',
+              },
+              gridLines: {
+                color: '#666'
+              }
+            }]
+          }
+        }
+      });
+    });
+    
+    // Define the URL, headers, and query
+  var url7 = "https://api.stakingrewards.com/public/query";
+  var headers7 = {
+    "x-api-key": "dc455e06-343b-414e-abc4-8158ba72f093",
+    "Content-Type": "application/json"
+  };
+  var query7 = `
+  {
+    assets(where: {slugs: ["ethereum-2-0"]}, limit: 1) {
+      metrics(limit: 4, where: {metricKeys: ["waiting_validators", "exiting_validators"]}) {
+        defaultValue
+        metricKey
+      }
+    }
+  }
+  `;
+
+  // Array of funky colors for the bars
+  var colors7 = [
+    '#FF6633', '#FFB399', '#FF33FF', '#FFFF99', '#00B3E6', 
+    '#E6B333', '#3366E6', '#999966', '#99FF99', '#B34D4D'
+  ];
+
+  // Send the request
+  fetch(url7, {
+    method: 'POST',
+    headers: headers7,
+    body: JSON.stringify({ query: query7 })
+  })
+    .then(response => response.json())
+    .then(data => {
+      // Parse the JSON response
+      var metrics7 = data.data.assets[0].metrics;
+      var labels7 = ["ETH Waiting", "ETH Exiting"];
+      var values7 = metrics7.map(metric => parseFloat(metric.defaultValue) * 32);
+
+      // Get the canvas context
+      var ctx7 = document.getElementById('myChart7').getContext('2d');
+
+      // Create a bar chart for the metrics
+      new Chart(ctx7, {
+        type: 'bar',
+        data: {
+          labels: labels7,
+          datasets: [{
+            label: 'ETH Waiting to be Staked',
+            data: values7,
+            backgroundColor: colors7,
+            borderColor: colors7,
+            borderWidth: 1
+          }]
+        },
+        options: {
+          title: {
+            display: true,
+            text: 'ETH Waiting',
+            fontColor: '#fff',
+            fontSize: 20
+          },
+          legend: {
+            display: false
+          },
+          scales: {
+            yAxes: [{
+              ticks: {
+                beginAtZero: true,
+                fontColor: '#fff'
+              },
+              gridLines: {
+                color: '#666'
+              }
+            }],
+            xAxes: [{
+              ticks: {
+                fontColor: '#fff'
+              },
+              gridLines: {
+                color: '#666'
+              }
+            }]
+          }
+        }
+      });
+    });
+    
+    // Define the URL, headers, and query for Chart 8
+var url8 = "https://api.stakingrewards.com/public/query";
+var headers8 = {
+  "x-api-key": "dc455e06-343b-414e-abc4-8158ba72f093",
+  "Content-Type": "application/json"
+};
+var query8 = `
+{
+  assets(where:{isActive:true},order:{metricKey_asc:"net_staking_flow_7d"},limit:10){
+    name
+    metrics(where:{metricKeys:["net_staking_flow_7d"]},limit:1){
+      defaultValue
+    }
+  }
+}
+`;
+
+// Send the request for Chart 8
+fetch(url8, {
+  method: 'POST',
+  headers: headers8,
+  body: JSON.stringify({ query: query8 })
+})
+  .then(response => response.json())
+  .then(data => {
+    // Parse the JSON response for Chart 8
+    var assets8 = data.data.assets;
+    var labels8 = assets8.map(asset => asset.name);
+    var stakingOutflows8 = assets8.map(asset => parseFloat(asset.metrics[0].defaultValue));
+
+    // Get the canvas context for Chart 8
+    var ctx8 = document.getElementById('myChart8').getContext('2d');
+
+    // Create a pie chart for the top staking outflows
+    new Chart(ctx8, {
+      type: 'pie',
+      data: {
+        labels: labels8,
+        datasets: [{
+          label: 'Staking Outflows',
+          data: stakingOutflows8,
+          backgroundColor: [
+            '#FF6633', '#FFB399', '#FF33FF', '#FFFF99', '#00B3E6',
+            '#E6B333', '#3366E6', '#999966', '#99FF99', '#B34D4D'
+          ],
+          borderColor: '#000',
+          borderWidth: 1
+        }]
+      },
+      options: {
+        title: {
+          display: true,
+          text: 'Top Staking Outflows',
+          fontColor: '#fff',
+          fontSize: 20
+        },
+        legend: {
+          display: true,
+          position: 'bottom',
+          labels: {
+            fontColor: '#fff'
+          }
+        },
+        tooltips: {
+          callbacks: {
+            label: function(tooltipItem, data) {
+              var dataset = data.datasets[tooltipItem.datasetIndex];
+              var total = dataset.data.reduce(function(previousValue, currentValue) {
+                return previousValue + currentValue;
+              });
+              var currentValue = dataset.data[tooltipItem.index];
+              var percentage = Math.floor(((currentValue / total) * 100) + 0.5);
+              return dataset.label + ": " + currentValue.toLocaleString() + " USD (" + percentage + "%)";
+            }
+          }
+        }
+      }
+    });
+  });
+
+// Define the URL, headers, and query
+    var url9 = "https://api.stakingrewards.com/public/query";
+    var headers9 = {
+      "x-api-key": "dc455e06-343b-414e-abc4-8158ba72f093",
+      "Content-Type": "application/json"
+    };
+    var query9 = `
+    {
+      providers(where:{isActive:true},order:{metricKey_desc:"staking_wallets"},limit:15){
+        name
+        metrics(where:{metricKeys:["staking_wallets"]},limit:1){
+          defaultValue
+        }
+      }
+    }
+    `;
+
+    // Send the request
+    fetch(url9, {
+      method: 'POST',
+      headers: headers9,
+      body: JSON.stringify({query: query9})
+    })
+    .then(response => response.json())
+    .then(data => {
+      // Parse the JSON response
+      var providers = data.data.providers;
+      var names9 = providers.map(provider => provider.name);
+      var stakingWallets9 = providers.map(provider => parseFloat(provider.metrics[0].defaultValue));
+
+      // Get the canvas context
+      var ctx9 = document.getElementById('myChart9').getContext('2d');
+
+      // Create a bar chart for the top staking providers by staking wallets
+      new Chart(ctx9, {
+        type: 'bar',
+        data: {
+          labels: names9,
+          datasets: [{
+            label: 'Top Staking Providers by Staking Wallets',
+            data: stakingWallets9,
+            backgroundColor: [
+              '#FF6633', '#FFB399', '#FF33FF', '#FFFF99', '#00B3E6',
+              '#E6B333', '#3366E6', '#999966', '#99FF99', '#B34D4D'
+            ],
+            borderColor: '#000',
+            borderWidth: 1
+          }]
+        },
+        options: {
+          plugins: {
+            datalabels: {
+              color: '#fff',
+              anchor: 'end',
+              align: 'top',
+              formatter: function(value, context) {
+                return value.toLocaleString();
+              }
+            }
+          },
+          title: {
+            display: true,
+            text: 'Top 15 Staking Providers by Staking Wallets',
+            fontColor: '#fff',
+            fontSize: 24
+          },
+          legend: {
+            display: false
+          },
+          scales: {
+            xAxes: [{
+              ticks: {
+                fontColor: '#fff'
+              },
+              gridLines: {
+                color: '#666'
+              }
+            }],
+            yAxes: [{
+              ticks: {
+                fontColor: '#fff'
+              },
+              gridLines: {
+                color: '#666'
+              }
+            }]
+          }
+        }
+      });
+    });
+    
+    // Define the URL, headers, and query for Chart 10
+    var url10 = "https://api.stakingrewards.com/public/query";
+    var headers10 = {
+      "x-api-key": "dc455e06-343b-414e-abc4-8158ba72f093",
+      "Content-Type": "application/json"
+    };
+    var query10 = `
+    {
+      assets(where:{isActive:true},order:{metricKey_desc:"staking_marketcap"},limit:10){
+        name
+        metrics(where:{metricKeys:["staking_marketcap"]},limit:1){
+          defaultValue
+        }
+      }
+    }
+    `;
+
+    // Send the request for Chart 10
+    fetch(url10, {
+      method: 'POST',
+      headers: headers10,
+      body: JSON.stringify({ query: query10 })
+    })
+    .then(response => response.json())
+    .then(data => {
+      // Parse the JSON response for Chart 10
+      var assets10 = data.data.assets;
+      var labels10 = assets10.map(asset => asset.name);
+      var marketCaps10 = assets10.map(asset => parseFloat(asset.metrics[0].defaultValue));
+
+      // Get the canvas context for Chart 10
+      var ctx10 = document.getElementById('myChart10').getContext('2d');
+
+      // Create a pie chart for Chart 10
+      new Chart(ctx10, {
+        type: 'pie',
+        data: {
+          labels: labels10,
+          datasets: [{
+            data: marketCaps10,
+            backgroundColor: [
+              '#FF6633', '#FFB399', '#FF33FF', '#FFFF99', '#00B3E6',
+              '#E6B333', '#3366E6', '#999966', '#99FF99', '#B34D4D'
+            ],
+            borderColor: '#000',
+            borderWidth: 1
+          }]
+        },
+        options: {
+          title: {
+            display: true,
+            text: 'Top 10 Staking Market Cap',
+            fontColor: '#fff',
+            fontSize: 20
+          },
+          legend: {
+            display: true,
+            position: 'right',
+            labels: {
+              fontColor: '#fff'
+            }
+          },
+          tooltips: {
+            callbacks: {
+              label: function(tooltipItem, data) {
+                var dataset = data.datasets[tooltipItem.datasetIndex];
+                var total = dataset.data.reduce(function(previousValue, currentValue) {
+                  return previousValue + currentValue;
+                });
+                var currentValue = dataset.data[tooltipItem.index];
+                var percentage = Math.floor(((currentValue / total) * 100) + 0.5);
+                return dataset.label + ": " + currentValue.toLocaleString() + " USD (" + percentage + "%)";
+              }
+            }
+          },
+          plugins: {
+            datalabels: {
+              display: true,
+              color: '#fff',
+              formatter: function(value) {
+                return value.toLocaleString();
+              }
+            }
+          }
+        }
+      });
+    });
+    
+  </script>
+</body>
+</html>
