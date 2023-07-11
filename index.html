@@ -2,6 +2,90 @@
 <html>
 <head>
 <style>
+         #macroValidatorChartsBtn {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    padding: 10px 20px;
+    border: none;
+    cursor: pointer;
+    font-family: Arial, sans-serif;
+    font-size: 14px;
+    font-weight: bold;
+    color: #FFFFFF;
+    background-color: #000000;
+    border-radius: 30px;
+    transition: background-color 0.3s;
+    box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.16);
+  }
+
+  #macroassetchartsBtn:hover {
+    background-color: #111111;
+  }
+  
+   #macroassetchartsBtn {
+    position: absolute;
+    top: 10px;
+    left: 215px;
+    padding: 10px 20px;
+    border: none;
+    cursor: pointer;
+    font-family: Arial, sans-serif;
+    font-size: 14px;
+    font-weight: bold;
+    color: #FFFFFF;
+    background-color: #000000;
+    border-radius: 30px;
+    transition: background-color 0.3s;
+    box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.16);
+  }
+
+  #macroValidatorChartsBtn:hover {
+    background-color: #111111;
+  }
+  
+  #ethereumchartsBtn {
+    position: absolute;
+    top: 10px;
+    left: 400px;
+    padding: 10px 20px;
+    border: none;
+    cursor: pointer;
+    font-family: Arial, sans-serif;
+    font-size: 14px;
+    font-weight: bold;
+    color: #FFFFFF;
+    background-color: #000000;
+    border-radius: 30px;
+    transition: background-color 0.3s;
+    box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.16);
+  }
+
+  #ethereumchartsBtn:hover {
+    background-color: #111111;
+  }
+  
+  #cosmoschartsBtn {
+    position: absolute;
+    top: 10px;
+    left: 620px;
+    padding: 10px 20px;
+    border: none;
+    cursor: pointer;
+    font-family: Arial, sans-serif;
+    font-size: 14px;
+    font-weight: bold;
+    color: #FFFFFF;
+    background-color: #000000;
+    border-radius: 30px;
+    transition: background-color 0.3s;
+    box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.16);
+  }
+
+  #cosmoschartsBtn:hover {
+    background-color: #111111;
+  }
+        
         body {
             margin: 0;
             padding: 0;
@@ -52,17 +136,14 @@
       50% { border-color: #000; }
     }
 
-    .revolving-emoji {
-      animation: rotate 10s infinite linear;
-      font-size: 40px;
-      margin: 100px auto;
-      text-align: center;
-      display: block;
-    }
+    
     </style>
 </head>
 <body>
-
+<button id="macroValidatorChartsBtn">Macro Validator Charts</button>
+<button id="macroassetchartsBtn">Macro Asset Charts</button>
+<button id="ethereumchartsBtn">Ethereum Staking Charts</button>
+<button id="cosmoschartsBtn">Cosmos Staking Charts</button>
 
 </body>
 <head>
@@ -129,13 +210,17 @@
     font-size: 16px;
     color: #000;
   }
+  #staketisticsHeading {
+    text-align: center;
+    left: 1000px;
+  }
 </style>
 
 
 </head>
 <body>
   <div class="typing">
-    <h1>StakeTistics.com</h1>
+    <h1 id="staketisticsHeading">Staketistics.com</h1>
   </div>
 
   <div class="statement">
